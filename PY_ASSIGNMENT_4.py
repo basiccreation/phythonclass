@@ -1,0 +1,325 @@
+'''
+Pia Smith
+------------------------------------
+The Rock Paper Scissors Game Program
+------------------------------------
+
+This program mimics the children's game of the same name or Rochambeau as it
+is also called.
+
+Player will select either Rock, Paper or Scissor. Computer's play is
+selected randomly.
+
+    - Rock beats Scissors (by smashing them)
+    - Paper beats Rock (by wrapping it)
+    - Scissors beat Paper (by cutting it)
+    - If both make the same choice, they go again
+
+This game is won by the side that has the highest score after five won games,
+ties don't count.
+
+After the game, the player is asked whether they want to play one more again.
+
+-----------------------------------------------------------------------------
+'''
+# Import libraries
+import random
+
+# Introduce the game
+print("\n\nLet's play a short game of Rock Paper Scissors!")
+
+# Alert the game consist of five sets
+print("We're playing five rounds.\n\nYou start.")
+
+# Play another game until player says no
+newGame = "y" # Boolean variable y/n
+
+while(newGame == "y"):
+
+    # main() is where the main program control is
+    def main():
+
+        # Keep playing until won games total five
+        gameLimit = 5 # Limit session to 5 won games
+        gameCount = 1 # Game count starts out at 0ne
+        computerTotal = 0 # Initializing total won games by computer
+        playerTotal = 0 # Initializing total won games by player
+
+        # Continue until game count is five
+        while(gameCount <= gameLimit):
+        
+            # Get player choice
+            player = int(input("\nEnter:\n1: Rock\n2: Paper\n3: Scissors\n>> "))
+
+            # Validate player choice is 1, 2 or 3
+            while player < 0 or player > 3:
+                print("\nOops! That is not a choice.")
+                player = int(input("Please enter: 1, 2 or 3\n>>  "))
+            
+            # Print player's play
+            printPlayerChoice = choiceString(player)
+            print("\nYou play",printPlayerChoice)
+
+            # Print computer's play
+            computer = computerChoice()
+            printComputerChoice = choiceString(computer)
+            print("Computer plays",printComputerChoice)
+
+            # Print winner of round and
+            # returns winner of the games and
+            # returns the number to be added towards won games
+            winner, game = rockPaperScissors(computer,player)
+
+            # Keeping score for game
+            computerWon, playerWon = keepingScore(winner)
+
+            # Calculate running total for games won by computer
+            computerTotal = computerTotal + computerWon
+
+            # Calculate running total for games won by player
+            playerTotal = playerTotal + playerWon
+
+            # Keep count of won games
+            gameCount = gameCount + game
+
+        # Alert game is over
+        print("\n----------------\nG A M E  O V E R\n----------------")
+        
+        # Print won games by computer
+        print("Computer:  ", computerTotal)
+        
+        # Print won games by player
+        print("Player:    ", playerTotal)
+
+        # congratulate player if won
+        if playerTotal > computerTotal:
+            print("----------------\nWell Done!!")
+        else:
+            # console play if lost
+            print("----------------\nGood game! You almost won.")
+
+    # keepingScore() takes an integer and
+    # returns two integers indicating whether
+    # computer or player won or it was a tie
+    def keepingScore(result):
+        # Computer won
+        if result == 1:
+            computerWon = 1
+            playerWon = 0
+            return computerWon, playerWon
+        # Player won
+        elif result == 2:
+            computerWon = 0
+            playerWon = 1
+            return computerWon, playerWon
+        # It is a tie
+        elif result == 0:
+            computerWon = 0
+            playerWon = 0            
+            return computerWon, playerWon
+
+    # computerChoice() returns computer's random choice
+    def computerChoice():
+        # computer's random choice
+        computers_random_choice = random.randint(1,3)
+        return computers_random_choice
+
+    # choiceString() takes an integer and returns a string
+    # - converts player's / computer's plays to strings
+    def choiceString(choice):
+        if choice == 1:
+            play = "Rock"
+        elif choice == 2:
+            play = "Paper"
+        elif choice == 3:
+            play = "Scissors"
+        return play
+
+    # rockPaperScissors() takes two integer and returns one integer
+    # - calculates who wins the round -- or if it's a tie
+    def rockPaperScissors(computer,player):
+        
+        # Turn computer and player choices into strings
+        computerString = str(computer)
+        playerString = str(player)
+        
+        # Concatnate computer and player strings
+        score = computerString + playerString
+        
+        # Find out who won
+        # Computer wins
+        if  score == "21" or score == "13" or score == "32":
+            print("\n> Computer wins this one")
+            # Add 1 to computer total
+            winner = 1
+            # Add 1 to game total
+            game = 1
+
+            return winner, game
+
+        # It is a tie
+        elif score == "11" or score == "33" or score == "22":
+            print("\n> This one is a tie, try again.")
+            # Add 0 to computer total
+            winner = 0
+            # Add 0 to game total
+            game = 0
+
+            return winner, game
+
+        # Player wins    
+        elif score == "12" or score == "31" or score == "23":
+            print("\n> You win this one.")
+            # Add 1 to player total
+            winner = 2
+            # Add 1 to game total
+            game = 1
+
+            return winner, game
+        
+    main()
+
+    newGame = input("\nWould you like to play again?\n>> (y/n)   ")
+
+# Outro: say thank you and goodbye
+print("\n\nThank you for playing Rock Paper Scissors.\nHope you had fun!\n\n")
+
+'''
+OUTPUT
+-----------------------------------------------------
+====== RESTART: /Users/piasmith/Desktop/PYTHON class/PY_ASSIGNMENT_4.py ======
+
+
+Let's play a short game of Rock Paper Scissors!
+We're playing five rounds.
+
+You start.
+
+Enter:
+1: Rock
+2: Paper
+3: Scissors
+>> 1
+
+You play Rock
+Computer plays Scissors
+
+> You win this one.
+
+Enter:
+1: Rock
+2: Paper
+3: Scissors
+>> 1
+
+You play Rock
+Computer plays Paper
+
+> Computer wins this one
+
+Enter:
+1: Rock
+2: Paper
+3: Scissors
+>> 1
+
+You play Rock
+Computer plays Rock
+
+> This one is a tie, try again.
+
+Enter:
+1: Rock
+2: Paper
+3: Scissors
+>> 1
+
+You play Rock
+Computer plays Scissors
+
+> You win this one.
+
+Enter:
+1: Rock
+2: Paper
+3: Scissors
+>> 1
+
+You play Rock
+Computer plays Rock
+
+> This one is a tie, try again.
+
+Enter:
+1: Rock
+2: Paper
+3: Scissors
+>> 1
+
+You play Rock
+Computer plays Rock
+
+> This one is a tie, try again.
+
+Enter:
+1: Rock
+2: Paper
+3: Scissors
+>> 1
+
+You play Rock
+Computer plays Rock
+
+> This one is a tie, try again.
+
+Enter:
+1: Rock
+2: Paper
+3: Scissors
+>> 1
+
+You play Rock
+Computer plays Paper
+
+> Computer wins this one
+
+Enter:
+1: Rock
+2: Paper
+3: Scissors
+>> 1
+
+You play Rock
+Computer plays Rock
+
+> This one is a tie, try again.
+
+Enter:
+1: Rock
+2: Paper
+3: Scissors
+>> 1
+
+You play Rock
+Computer plays Scissors
+
+> You win this one.
+
+----------------
+G A M E  O V E R
+----------------
+Computer:   2
+Player:     3
+----------------
+Well Done!!
+
+Would you like to play again?
+>> (y/n)   n
+
+
+Thank you for playing Rock Paper Scissors.
+Hope you had fun!
+
+
+-----------------------------------------------------
+'''
