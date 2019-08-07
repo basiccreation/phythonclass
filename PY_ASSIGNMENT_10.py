@@ -7,7 +7,7 @@ Employee class and subclass
 
 The Program Spec:
 
-User enters employee data programs prints it to screen for verification.
+User enters employee data. Programs prints it to screen for verification.
 
 Create a run and include it as output with your program.
 Be sure to show that the validation works for the possible answers.
@@ -16,46 +16,67 @@ Be sure to show that the validation works for the possible answers.
 
 # Employee class
 class Employee:
+    
     # The __init__ method accepts arguments for
     # Employee name and Employee number.
+    # ----------------------------------
+    # Per Group Chat: Joshua Roche, changing dunder
+    # to single underscores enables inheritance for
+    # the sub-class
+    def __init__(self, employee_name,
+                 employee_number):
+        self._employee_name = employee_name
+        self._employee_number = employee_number
 
-    def __init__(self, employee_name, employee_number):
-        self.__employee_name = employee_name
-        self.__employee_number = employee_number
-
-    # set mutators
+    # Set mutators
     def set_employee_name(self, employee_name):
-        self.__employee_name = employee_name
+        self._employee_name = employee_name
 
     def set_employee_number(self, employee_number):
-        self.__employee_number = employee_number
+        self._employee_number = employee_number
 
     # Set accessors
     def get_employee_name(self):
-        return self.__employee_name
+        return self._employee_name
 
     def get_employee_number(self):
-        return self.__employee_number
+        return self._employee_number
 
-        def __str__(self):
-            return "returning from employee"
+    # Set __str__
+    def __str__(self):
+        return "Employee name and number" +\
+               "\n" + str(self._employee_name) +\
+               "\n" + str(self._employee_number) +\
+               "\n"   
 
-# Production Worker class
+# Production Worker Class
 class ProductionWorker(Employee):
 
     # The __init__ method accepts arguments for employee name, 
     # number, shift number and hourly pay rate
 
-    def __init__(self, employee_name, employee_number, shift_number, hourly_pay_rate):
+    def __init__(self,
+                 employee_name,
+                 employee_number,
+                 shift_number,
+                 hourly_pay_rate):
 
         # Call Employee superclass
-        Employee.__init__(self, employee_name, employee_number)
+        Employee.__init__(self,
+                          employee_name,
+                          employee_number)
 
         # Initialize __shift_number attribute
         self.__shift_number = shift_number
 
         # Initialize __shift_number attribute
         self.__hourly_pay_rate = hourly_pay_rate
+        
+        # Initialize __employee_name attribute
+        # self.__employee_name = employee_name
+
+        # Initialize __employee_number attribute
+        # self.__employee_number = employee_number
 
     # Set mutators
     def set_shift_number(self, shift_number):
@@ -75,13 +96,26 @@ class ProductionWorker(Employee):
         if self.__shift_number == 1:
             return "Day Shift"
         if self.__shift_number == 2:
-            return "Night Shift"        
-        
+            return "Night Shift"    
+
+    # Set __set__
+    def __str__(self):
+        return "\n\nYou entered:\n------------------" +\
+               "\nEmployee Name: " + str(self._employee_name) +\
+               "\nEmployee Number: " + str(self._employee_number) +\
+               "\nWork Shift: " + str(self.__shift_number) + " - " + \
+               self.shift_description() +\
+               "\nPay Rate $: " +\
+               format(self.__hourly_pay_rate, ',.2f') +\
+               "\n------------------"
+    
+# main() contains programs main     
 def main():
 
+    # Ask for user input
     print("Enter Employee information below:")
 
-    ''' Get worker data'''
+    ''' Get Worker Data'''
     # Get Name
     name = input("Name: ")
 
@@ -106,22 +140,39 @@ def main():
     # Get pay rate
     rate = float(input("Rate: "))
 
-    # Verify the amount is correct
-    while rate not in [20.00,30.00,40.00]:
-        print("Check the rate again. Should be either:")
-        rate = float(input("Regular hours: $20, plus 50%: $30 or double: $40"))
+    # Verify the amount is either regular pay, plus 50% or double
+    while rate not in [20.20,30.30,40.40]:
+        #print("Check the rate again.\n- Regular hours: $20.20")
+        #print("- Plus 50%: $30.30\n- double: $40.40")
+        print("Check the rate again.")
+        print("- Regular:  $20.20")
+        print("- Plus 50%: $30.30")
+        print("- Double:   $40.40")
+        rate = float(input("> "))
 
     # Create object from ProductionWorker class
     worker_entry = ProductionWorker(name, number, shift, rate)
-        
+    '''   
     # Display the entered data
-    print("\n\nYou entered:\n------------")
-    print("Employee Name:", worker_entry.get_employee_name())
-    print("Employee Number:", worker_entry.get_employee_number())
-    print("Work Shift:", worker_entry.get_shift_number(),"-", worker_entry.shift_description())
-    print("Pay Rate: $", format(worker_entry.get_hourly_pay_rate(), ',.2f'), sep='')
+    print("\n\nYou entered:\n------------------")
+    
+    print("Employee Name:",
+          worker_entry.get_employee_name())
+    
+    print("Employee Number:",
+          worker_entry.get_employee_number())
+    
+    print("Work Shift:",
+          worker_entry.get_shift_number(),"-",
+          worker_entry.shift_description())
+    
+    print("Pay Rate: $",
+          format(worker_entry.get_hourly_pay_rate(), ',.2f'), sep='')
+    
     print("------------------")
+    '''
     print(worker_entry)
+    
 
 main()
 '''
